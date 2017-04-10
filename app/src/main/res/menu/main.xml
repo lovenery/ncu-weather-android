@@ -8,5 +8,5 @@
         android:icon="@drawable/ic_search"
         android:orderInCategory="1"
         android:title="@string/action_refresh"
-        app:showAsAction="ifRoom|collapseActionView"/>
+        app:showAsAction="ifRoom"/>
 </menu>
