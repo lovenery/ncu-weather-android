@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">NCUWeather</string>
+    <string name="app_name">中大即時氣象</string>
+    <string name="error_message">錯誤！可能伺服器在維修中，請稍候再試。</string>
 </resources>
