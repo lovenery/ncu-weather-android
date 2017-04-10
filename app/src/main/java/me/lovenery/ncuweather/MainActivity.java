@@ -3,6 +3,9 @@ package me.lovenery.ncuweather;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.view.View;
@@ -17,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView weatherTextView;
     private TextView errorMessageTextView;
     private ProgressBar loadingIndicator;
+    public Boolean isPending;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,12 +30,18 @@ public class MainActivity extends AppCompatActivity {
         weatherTextView = (TextView) findViewById(R.id.tv_weather_data);
         errorMessageTextView = (TextView) findViewById(R.id.tv_error_message_display);
         loadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         loadWeatherData();
     }
 
     private void loadWeatherData() {
-        showWeatherDataView();
+        isPending = true;
+        weatherTextView.setText("");
+        showWeatherDataView(); // show before AsyncTask
         new FetchWeatherTask().execute();
     }
 
@@ -78,6 +88,24 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 showErrorMessage();
             }
+            isPending = false;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_refresh && !isPending) {
+            loadWeatherData();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
